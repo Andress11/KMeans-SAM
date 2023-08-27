@@ -40,7 +40,7 @@ def imread(data, HSI_or_RGB = "RGB"):
     BBand = HSI[:,:,19]
 
     RGB = np.stack((RBand,GBand,BBand),axis = 2)
-    RGB = np.array(RGB*255,dtype = np.uint8)
+    RGBT = np.array(RGB*255,dtype = np.uint8)
 
     #plt.figure(figsize=(10,10))
 
@@ -57,7 +57,7 @@ def imread(data, HSI_or_RGB = "RGB"):
 
     plt.show()    
 
-    return HSI,RGB, wavelength
+    return HSI,RGBT, wavelength
 
   else:
 
