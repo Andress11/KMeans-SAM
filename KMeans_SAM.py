@@ -8,6 +8,7 @@ import torchvision
 import sys
 from spectral import *
 import wget
+import plotly.graph_objects as go
 
 sys.path.append("..")
 from segment_anything import sam_model_registry, SamAutomaticMaskGenerator, SamPredictor
@@ -303,5 +304,45 @@ def Lab_masks(img, Masks,rgb,White):
     m = np.where(ann['segmentation'].reshape(-1) ==  1)
     data_RGB = rgb.reshape(-1,3)[m].mean(0)
     RGB_masks.append(data_RGB)
+    
+  customdata = np.column_stack((Lab_masks,idx))
+  Lab_masks_array = np.array(Lab_masks)
+  fig = go.Figure()
+
+  fig.add_trace(go.Scatter(
+        x=Lab_masks_array[:,1],
+        y=Lab_masks_array[:,2],
+        customdata=customdata,
+        mode='markers',
+        marker=dict(
+          size=6,
+          color=['rgb({},{},{})'.format(int(r), int(g), int(b)) for r, g, b in RGB_masks],
+          opacity=1.0
+            ),
+        hovertemplate="<b>#</b> %{customdata[3]}<br><b>L</b>: %{customdata[0]}<br><b>a</b>: %{customdata[1]}<br><b>b</b>: %{customdata[2]:.2f}<extra></extra>",showlegend= False))
+  
+  fig.add_trace(go.Scatter(x=[0, 0], y=[-90, 90], mode='lines', line=dict(color='black', width=1),showlegend=False))
+  fig.add_trace(go.Scatter(x=[-90, 90], y=[0, 0], mode='lines', line=dict(color='black', width=1),showlegend=False))
+  
+  for theta in np.arange(0, 2 * np.pi, np.pi / 18):
+    x_end = 90 * np.cos(theta)
+    y_end = 90 * np.sin(theta)
+    fig.add_trace(go.Scatter(x=[0, x_end], y=[0, y_end], mode='lines',
+                              line=dict(color='rgba(128, 128, 128, 0.5)', width=1, dash='dot'), showlegend=False))
+  
+  fig.add_shape(
+    type="circle",
+    xref="x", yref="y",
+    x0=-90, y0=-90, x1=90, y1=90,
+    line=dict(color="black", width=2, dash="dash"))
+  
+  fig.update_layout(
+    xaxis=dict(range=[-90, 90], title='a'),
+    yaxis=dict(range=[-90, 90], title='b'),
+    autosize=False,
+    width=800,
+    height=800)
+  
+  fig.show()
 
   return Lab_masks, idx, RGB_masks
