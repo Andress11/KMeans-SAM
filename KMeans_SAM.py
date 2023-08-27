@@ -257,3 +257,21 @@ def image_segmentation(img,k):
 
     segmented_img = np.reshape(segmented_img,features[:-1])
     return segmented_img,info,Lab
+
+def ShowMasks(anns,limit = (5,75)):
+  
+    sorted_anns = sorted(anns, key=(lambda x: x['area']), reverse=True)
+
+    img = np.ones((sorted_anns[0]['segmentation'].shape[0], sorted_anns[0]['segmentation'].shape[1], 4))
+    img[:,:,3] = 0
+
+    for ann in sorted_anns[-limit[1]:-limit[0]]:
+        m = ann['segmentation']
+        color_mask = np.concatenate([np.random.random(3), [1]])
+        img[m] = color_mask
+
+
+    plt.figure(figsize = (10,10))
+    plt.imshow(img)
+    plt.axis("off")
+    plt.show()
