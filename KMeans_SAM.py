@@ -20,6 +20,13 @@ def imread(data, HSI_or_RGB = "RGB"):
   if HSI_or_RGB == "RGB":
 
     img = cv.cvtColor(cv.imread(data),cv.COLOR_BGR2RGB)
+
+    plt.imshow(img)
+    plt.title("Imagen RGB generada")
+    plt.axis("off")
+
+    plt.show()    
+    
     return img
 
   elif HSI_or_RGB == "HSI":
@@ -34,6 +41,21 @@ def imread(data, HSI_or_RGB = "RGB"):
 
     RGB = np.stack((RBand,GBand,BBand),axis = 2)
     RGB = np.array(RGB*255,dtype = np.uint8)
+
+    #plt.figure(figsize=(10,10))
+
+    plt.subplot(1,2,1)
+    plt.imshow(HSI[:,:,40 ])
+    plt.title("Imagen Hiperespectral")
+    plt.axis("off")
+
+
+    plt.subplot(1,2,2)
+    plt.imshow(RGB)
+    plt.title("Imagen RGB generada")
+    plt.axis("off")
+
+    plt.show()    
 
     return HSI,RGB, wavelength
 
