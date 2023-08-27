@@ -280,3 +280,28 @@ def ShowMasks(anns,limit = (5,75)):
     plt.show()
 
     return img
+
+def Lab_masks(img, Masks,rgb,White):
+
+  Lab_masks = []
+  RGB_masks = []
+  idx = []
+
+  sorted_anns = Masks#sorted(Masks, key=(lambda x: x['area']), reverse=True)
+
+  for ann in sorted_anns:
+
+    m = np.where(ann['segmentation'].reshape(-1) ==  1)
+    data_Lab = Spectra2Lab(img[m],White).mean(0)
+    Lab_masks.append(data_Lab)
+
+  for i in range(len(sorted_anns)):
+    idx.append(i)
+
+  for ann in sorted_anns:
+
+    m = np.where(ann['segmentation'].reshape(-1) ==  1)
+    data_RGB = rgb.reshape(-1,3)[m].mean(0)
+    RGB_masks.append(data_RGB)
+
+  return Lab_masks, idx, RGB_masks
