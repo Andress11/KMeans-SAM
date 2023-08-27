@@ -203,7 +203,10 @@ def White_reference(datacube,stdlim):
 
     datacube[White_idx[Teflon_idx]] = np.zeros(204)
 
+    plt.figure(figsize=(10,10))
     plt.imshow(datacube.reshape(512,512,-1)[:,:,50])
+    plt.axis("off")
+    plt.show()
     return white_reference,Teflon
 
 
