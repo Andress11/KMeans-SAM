@@ -275,3 +275,5 @@ def ShowMasks(anns,limit = (5,75)):
     plt.imshow(img)
     plt.axis("off")
     plt.show()
+
+    return img
