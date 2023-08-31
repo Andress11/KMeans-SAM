@@ -11,6 +11,7 @@ import wget
 import plotly.graph_objects as go
 
 sys.path.append("..")
+
 from segment_anything import sam_model_registry, SamAutomaticMaskGenerator, SamPredictor
 
 wget.download("https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth")
@@ -21,6 +22,7 @@ def imread(data, HSI_or_RGB = "RGB"):
 
     img = cv.cvtColor(cv.imread(data),cv.COLOR_BGR2RGB)
 
+    plt.figure(figsize=(10,10))
     plt.imshow(img)
     plt.title("Imagen RGB generada")
     plt.axis("off")
@@ -42,7 +44,7 @@ def imread(data, HSI_or_RGB = "RGB"):
     RGB = np.stack((RBand,GBand,BBand),axis = 2)
     RGBT = np.array(RGB*255,dtype = np.uint8)
 
-    #plt.figure(figsize=(10,10))
+    plt.figure(figsize=(10,10))
 
     plt.subplot(1,2,1)
     plt.imshow(HSI[:,:,40 ])
@@ -376,7 +378,7 @@ def Lab_masks_RGB(img,Masks):
     RGB_masks = []
     idx = []
 
-    sorted_anns = Masks#sorted(Masks, key=(lambda x: x['area']), reverse=True)
+    sorted_anns = Masks
 
     for ann in sorted_anns:
 
