@@ -210,8 +210,8 @@ def RGB2Lab(img_data):
 
 
 def White_reference(datacube,stdlim):
-    illumination_reference = np.genfromtxt('/content/drive/MyDrive/Proyecto_Investigación/HSI/D65.csv',delimiter=',')
-    TriEst = np.genfromtxt('/content/drive/MyDrive/Proyecto_Investigación/HSI/XYZOK.csv', delimiter= ',')
+    illumination_reference = np.genfromtxt('D65.csv',delimiter=',')
+    TriEst = np.genfromtxt('XYZOK.csv', delimiter= ',')
     std = datacube.std(1)
     White_idx = np.where(std <= stdlim)[0]
     White = datacube[White_idx]
@@ -235,8 +235,8 @@ def White_reference(datacube,stdlim):
 
 def Spectra2Lab(datacube,white_reference = (1,1,1)):
 
-    TriEst = np.genfromtxt('/content/drive/MyDrive/Proyecto_Investigación/HSI/XYZOK.csv', delimiter= ',')
-    illumination_reference = np.genfromtxt('/content/drive/MyDrive/Proyecto_Investigación/HSI/D65.csv',delimiter=',')
+    TriEst = np.genfromtxt('XYZOK.csv', delimiter= ',')
+    illumination_reference = np.genfromtxt('D65.csv',delimiter=',')
     k = 1/np.sum(illumination_reference[:130]*TriEst[:,3])
     X = k*np.sum(illumination_reference[:130]*datacube[:,:130]*TriEst[:,2],axis=1)
     Y = k*np.sum(illumination_reference[:130]*datacube[:,:130]*TriEst[:,3],axis=1)
