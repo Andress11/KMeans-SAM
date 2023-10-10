@@ -248,7 +248,7 @@ def Spectra2Lab(datacube,white_reference = (1,1,1)):
     a = 500*(((X/white_reference[0])**(1/3))-((Y/white_reference[1])**(1/3)))
     b = 200*(((Y/white_reference[1])**(1/3))-((Z/white_reference[2])**(1/3)))
 
-    Lab = np.column_stack((L,a,b))
+    Lab = np.column_stack((X,Y,Z))
 
     return Lab
 
